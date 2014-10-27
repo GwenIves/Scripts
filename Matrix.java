@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /*
- * Reads a symmetric matrix from stdin, reduces its bandwith using the Reverse CutHill-McKee algorithm and outputs to stdout
+ * Reads a matrix from stdin, reduces its bandwith using the Reverse CutHill-McKee algorithm and outputs to stdout
  * The matrix is represented as a graph adjacency list - each line giving connected node indexes (starting with 1) separated by blanks
  */
 
@@ -61,7 +61,63 @@ class Matrix {
 		}
 	}
 
+	private ArrayList<ArrayList<Integer>> copyAdjacencyList () {
+		ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>> ();
+
+		for (ArrayList<Integer> l : adjacencyList) {
+			if (l == null)
+				list.add (null);
+			else {
+				ArrayList<Integer> row = new ArrayList<Integer> ();
+				row.addAll (l);
+				list.add (row);
+			}
+		}
+
+		return list;
+	}
+
+	private void ensureSquare () {
+		int maxNode = -1;
+
+		for (ArrayList<Integer> list : adjacencyList) {
+			if (list == null)
+				continue;
+
+			for (Integer node : list) {
+				if (node > maxNode)
+					maxNode = node;
+			}
+		}
+
+		while (maxNode + 1 < adjacencyList.size ()) {
+			ArrayList<Integer> newList = new ArrayList<Integer> ();
+
+			adjacencyList.add (newList);
+		}
+	}
+
+	private void makeSymmetric () {
+		for (int i = 1; i < adjacencyList.size (); i++) {
+			ArrayList<Integer> list = adjacencyList.get (i);
+
+			for (int j = 1; j < list.size (); j++) {
+				int node = list.get (j);
+				ArrayList<Integer> transposeList = adjacencyList.get (node);
+
+				if (!transposeList.contains (i)) {
+					transposeList.add (i);
+				}
+			}
+		}
+	}
+
 	public void reduceBandwidth () throws InvalidMatrixException {
+		ArrayList<ArrayList<Integer>> origAdj = copyAdjacencyList ();
+
+		ensureSquare ();
+		makeSymmetric ();
+
 		if (!isSymmetric ())
 			throw new InvalidMatrixException ("Matrix not symmetric");
 
@@ -98,11 +154,11 @@ class Matrix {
 
 		// Now renumber the nodes in the list
 
-		ArrayList<ArrayList<Integer>> newAdjacencyList = new ArrayList<ArrayList<Integer>> (adjacencyList.size ());
+		ArrayList<ArrayList<Integer>> newAdjacencyList = new ArrayList<ArrayList<Integer>> (origAdj.size ());
 		newAdjacencyList.add (null);
 
-		for (int i = 1; i < adjacencyList.size (); i++) {
-			ArrayList<Integer> list = adjacencyList.get (i);
+		for (int i = 1; i < origAdj.size (); i++) {
+			ArrayList<Integer> list = origAdj.get (i);
 
 			for (int j = 1; j < list.size (); j++) {
 				int newIndex = results.indexOf (list.get (j)) + 1;
@@ -119,7 +175,7 @@ class Matrix {
 		for (int i = 1; i < newAdjacencyList.size (); i++) {
 			int newIndex = results.indexOf (i) + 1;
 
-			newAdjacencyList.set (newIndex, adjacencyList.get (i));
+			newAdjacencyList.set (newIndex, origAdj.get (i));
 		}
 
 		adjacencyList = newAdjacencyList;
