@@ -1,4 +1,3 @@
-import java.lang.IndexOutOfBoundsException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -61,65 +60,11 @@ class Matrix {
 		}
 	}
 
-	private ArrayList<ArrayList<Integer>> copyAdjacencyList () {
-		ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>> ();
-
-		for (ArrayList<Integer> l : adjacencyList) {
-			if (l == null)
-				list.add (null);
-			else {
-				ArrayList<Integer> row = new ArrayList<Integer> ();
-				row.addAll (l);
-				list.add (row);
-			}
-		}
-
-		return list;
-	}
-
-	private void ensureSquare () {
-		int maxNode = -1;
-
-		for (ArrayList<Integer> list : adjacencyList) {
-			if (list == null)
-				continue;
-
-			for (Integer node : list) {
-				if (node > maxNode)
-					maxNode = node;
-			}
-		}
-
-		while (maxNode + 1 < adjacencyList.size ()) {
-			ArrayList<Integer> newList = new ArrayList<Integer> ();
-
-			adjacencyList.add (newList);
-		}
-	}
-
-	private void makeSymmetric () {
-		for (int i = 1; i < adjacencyList.size (); i++) {
-			ArrayList<Integer> list = adjacencyList.get (i);
-
-			for (int j = 1; j < list.size (); j++) {
-				int node = list.get (j);
-				ArrayList<Integer> transposeList = adjacencyList.get (node);
-
-				if (!transposeList.contains (i)) {
-					transposeList.add (i);
-				}
-			}
-		}
-	}
-
 	public void reduceBandwidth () throws InvalidMatrixException {
 		ArrayList<ArrayList<Integer>> origAdj = copyAdjacencyList ();
 
 		ensureSquare ();
 		makeSymmetric ();
-
-		if (!isSymmetric ())
-			throw new InvalidMatrixException ("Matrix not symmetric");
 
 		ArrayList<Integer> results = new ArrayList<Integer> ();
 		ArrayList<Integer> queue = new ArrayList<Integer> ();
@@ -181,6 +126,58 @@ class Matrix {
 		adjacencyList = newAdjacencyList;
 	}
 
+	private ArrayList<ArrayList<Integer>> copyAdjacencyList () {
+		ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>> ();
+
+		for (ArrayList<Integer> l : adjacencyList) {
+			if (l == null)
+				list.add (null);
+			else {
+				ArrayList<Integer> row = new ArrayList<Integer> ();
+				row.addAll (l);
+				list.add (row);
+			}
+		}
+
+		return list;
+	}
+
+	private void ensureSquare () {
+		int maxNode = -1;
+
+		for (ArrayList<Integer> list : adjacencyList) {
+			if (list == null)
+				continue;
+
+			for (Integer node : list) {
+				if (node > maxNode)
+					maxNode = node;
+			}
+		}
+
+		while (maxNode + 1 < adjacencyList.size ()) {
+			ArrayList<Integer> newList = new ArrayList<Integer> ();
+
+			adjacencyList.add (newList);
+		}
+	}
+
+	// Make symmetric by adding the matrix transpose
+	private void makeSymmetric () {
+		for (int i = 1; i < adjacencyList.size (); i++) {
+			ArrayList<Integer> list = adjacencyList.get (i);
+
+			for (int j = 1; j < list.size (); j++) {
+				int node = list.get (j);
+				ArrayList<Integer> transposeList = adjacencyList.get (node);
+
+				if (!transposeList.contains (i)) {
+					transposeList.add (i);
+				}
+			}
+		}
+	}
+
 	private ArrayList<Integer> getUnprocessedAdjacencies (int node, ArrayList<Integer> results, ArrayList<Integer> queue) {
 		ArrayList<Integer> res = new ArrayList<Integer> ();
 
@@ -210,24 +207,10 @@ class Matrix {
 		return res;
 	}
 
-	public boolean isSymmetric () {
-		for (int i = 1; i < adjacencyList.size (); i++) {
-			ArrayList<Integer> list = adjacencyList.get (i);
-
-			for (int j = 1; j < list.size (); j++) {
-				int node = list.get (j);
-
-				try {
-					if (!adjacencyList.get (node).contains (i)) {
-						return false;
-					}
-				} catch (IndexOutOfBoundsException e) {
-					return false;
-				}
-			}
+	private class InvalidMatrixException extends Exception {
+		public InvalidMatrixException (String message) {
+			super (message);
 		}
-
-		return true;
 	}
 
 	public static void main (String[] args) {
@@ -240,12 +223,6 @@ class Matrix {
 		} catch (InvalidMatrixException e) {
 			System.err.printf ("Error: %s%n", e.getMessage ());
 			System.exit (1);
-		}
-	}
-
-	private class InvalidMatrixException extends Exception {
-		public InvalidMatrixException (String message) {
-			super (message);
 		}
 	}
 }
