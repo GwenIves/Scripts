@@ -1,0 +1,9 @@
+Scripts
+=======
+
+A collection of miscellaneous simple scripts
+
+gps_emulate.py - Send periodic GPS fixes to an Android emulator
+hoi2_tech.py - A Hearts of Iron 2 in game research teams performance analyser
+tab_list_analyse.py - Hierarchical list files analyser
+tidy_image_tags.sh - Strip personal information from image tags for online upload
