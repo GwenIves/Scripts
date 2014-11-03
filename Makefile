@@ -13,12 +13,12 @@ build:  $(executables)
 
 .PHONY: clean
 clean:
-	@echo "Deleteing java class files"
+	@echo "Deleting java class files"
 	@rm -f *.class
 
 .PHONY: distclean
 distclean: clean	
-	@echo "Deleteing all generated files"
+	@echo "Deleting all generated files"
 	@rm -f tags
 
 tags: $(sources)
