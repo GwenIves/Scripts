@@ -1,7 +1,7 @@
 #!/bin/env python3
 
 #
-# Generate a report of different research teams performances for all available technologies in the Paradox Entertainment's game Hearts of Iron 2
+# Generate a report of different research teams performances for all available technologies in the Paradox Interactive's game Hearts of Iron 2
 # usage: tech.py <country's research teams definition csv file> <list of all technology definition files>
 #
 
