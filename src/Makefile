@@ -9,7 +9,7 @@ executables := $(java_classes)
 ############### Top level targets
 
 .PHONY: build
-build:  $(executables)
+build: $(executables)
 
 .PHONY: clean
 clean:
@@ -17,7 +17,7 @@ clean:
 	@rm -f *.class
 
 .PHONY: distclean
-distclean: clean	
+distclean: clean
 	@echo "Deleting all generated files"
 	@rm -f tags
 
