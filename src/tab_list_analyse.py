@@ -57,8 +57,8 @@ def get_headings (filename, indentation_level):
 
 def main ():
 	if len (sys.argv) < 2:
-	    print ("usage: {0} <filename> <nesting level>".format (sys.argv[0]))
-	    sys.exit (1)
+		print ("usage: {0} <filename> <nesting level>".format (sys.argv[0]))
+		sys.exit (1)
 
 	if len (sys.argv) < 3:
 		level = 0
