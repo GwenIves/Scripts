@@ -36,7 +36,7 @@ def get_headings (filename, indentation_level):
 				count += 1
 			else:
 				break
-	
+
 		line = line.lstrip ()
 
 		if count <= indentation_level:
