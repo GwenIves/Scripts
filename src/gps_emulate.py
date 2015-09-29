@@ -17,11 +17,11 @@ LONGITUDE_DELTA = 0.0005
 LATITUDE_START = 40.0
 LONGITUDE_START = -5.0
 
-def quit_emulation(signal, frame):
-    s.close()
-    sys.exit(0)
-
 def main():
+    def quit_emulation(_, _):
+        s.close()
+        sys.exit(0)
+
     signal.signal(signal.SIGINT, quit_emulation)
 
     latitude = LATITUDE_START
@@ -46,8 +46,8 @@ def main():
                 s.send(command.encode('ascii'))
 
                 time.sleep(TIME_DELTA / 1000.0)
-    except ConnectionRefusedError as err:
-	    print(err)
+    except ConnectionError as err:
+        print(err)
 
 if __name__ == '__main__':
     main()

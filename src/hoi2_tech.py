@@ -1,8 +1,11 @@
 #!/bin/env python3
 
 #
-# Generate a report of different research teams performances for all available technologies in the Paradox Interactive's game Hearts of Iron 2
-# usage: tech.py <country's research teams definition csv file> <list of all technology definition files>
+# Generate a report of different research teams performances for all available technologies
+# in the Paradox Interactive's game Hearts of Iron 2
+# usage: tech.py
+#   <country's research teams definition csv file>
+#   <list of all technology definition files>
 #
 
 import sys
@@ -93,7 +96,7 @@ def get_teams(filename):
                     if len(s) > 1:
                         specialisations.append(s)
 
-                teams[name] =(skill, specialisations)
+                teams[name] = (skill, specialisations)
     except EnvironmentError as err:
         print(err)
 
@@ -144,7 +147,8 @@ def get_technologies(filename):
 
 def main():
     if len(sys.argv) <= 2:
-        print("usage: {0} <teams definition file> <technology definition files list>".format(sys.argv[0]))
+        print("usage: {0} <teams definition file> <technology definition files list>"
+            .format(sys.argv[0]))
         sys.exit(1)
 
     teams = get_teams(sys.argv[1])

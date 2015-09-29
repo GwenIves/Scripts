@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 
 #
-# Analyses a hierarchical tab-indented list file and prints out subsection sizes on a requested nesting level
-# Subsections with the same name in different subtrees are treated as continutaions of a single section
-# The script accepts two command line parameters - file name and indentation level
+# Analyses a hierarchical tab-indented list file
+# and prints out subsection sizes on a requested nesting level
+# Subsections with the same name in different subtrees
+# are treated as continutaions of a single section
+# The script accepts two command line parameters:
+#    file name
+#    indentation level
 #
 
 import sys
@@ -78,7 +82,7 @@ def main():
         print("Error: unable to process file {0}".format(sys.argv[1]))
         sys.exit(1)
 
-    for heading in sorted(headings, key = headings.get, reverse = True):
+    for heading in sorted(headings, key=headings.get, reverse=True):
         if headings[heading] > 0:
             print('{0}{1}'.format(heading.ljust(50, ' '), headings[heading]))
 

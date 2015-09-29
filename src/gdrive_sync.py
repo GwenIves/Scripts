@@ -38,16 +38,16 @@ def get_credentials():
 
     return credentials
 
-def get_files(service, title, parent_id = None, mime_type = None):
+def get_files(service, title, parent_id=None, mime_type=None):
     query = "title = '{}'".format(title)
 
     if mime_type:
         query += " and mimeType = '{}'".format(mime_type)
 
     if parent_id:
-            query += "and '{}' in parents".format(parent_id)
+        query += "and '{}' in parents".format(parent_id)
 
-    f = service.files().list(q = query).execute()
+    f = service.files().list(q=query).execute()
 
     return f["items"]
 
@@ -56,7 +56,7 @@ def create_file(service, title, parent_id, source, mime_type):
         "title" : title,
         "shared" : False,
         "mimeType" : mime_type,
-    "parents" : [{"id" : parent_id}]
+        "parents" : [{"id" : parent_id}]
     }
 
     params = {
@@ -105,7 +105,8 @@ def synchronize_files(files, service, options):
 def main():
     parser = optparse.OptionParser()
 
-    parser.add_option("-d", "--directory", help = "Google Drive directory to upload to", dest = "folder", default = None)
+    parser.add_option("-d", "--directory", dest="folder", default=None,
+                      help="Google Drive directory to upload to")
 
     (opts, args) = parser.parse_args()
 
