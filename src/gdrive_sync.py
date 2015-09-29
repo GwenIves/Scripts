@@ -72,7 +72,7 @@ def create_file(service, title, parent_id, source, mime_type):
     if not files:
         f = service.files().insert(**params).execute()
     else:
-    params["fileId"] = files[0]["id"]
+        params["fileId"] = files[0]["id"]
         f = service.files().update(**params).execute()
 
     return f
@@ -81,11 +81,11 @@ def get_folder_id(service, folder):
     if folder:
         folders = get_files(service, folder, "root", FOLDER_MIME_TYPE)
 
-    if folders:
+        if folders:
             folder_id = folders[0]["id"]
-    else:
+        else:
             folder = create_file(service, folder, "root", None, FOLDER_MIME_TYPE)
-        folder_id = folder["id"]
+            folder_id = folder["id"]
     else:
         folder_id = "root"
 
