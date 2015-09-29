@@ -13,42 +13,46 @@ def get_headings (filename, indentation_level):
 	heading = ''
 	headings = {}
 
-	for line in open (filename, 'r'):
-		line = line.rstrip ()
+	try:
+		with open (filename, 'r') as fh:
+			for line in fh:
+				line = line.rstrip ()
 
-		if len (line) == 0:
-			continue
+				if len (line) == 0:
+					continue
 
-		# Include commented out lines
-		if line[0] == '#':
-			line = line[1:].rstrip ()
+				# Include commented out lines
+				if line[0] == '#':
+					line = line[1:].rstrip ()
 
-			if len (line) == 0:
-				continue
+					if len (line) == 0:
+						continue
 
-		if line == "==========EndOfList==========":
-			break
+				if line == "==========EndOfList==========":
+					break
 
-		count = 0
+				count = 0
 
-		for c in line:
-			if c == '\t':
-				count += 1
-			else:
-				break
+				for c in line:
+					if c == '\t':
+						count += 1
+					else:
+						break
 
-		line = line.lstrip ()
+				line = line.lstrip ()
 
-		if count <= indentation_level:
-			if len (heading) > 0:
-				headings[heading] = headings.get (heading, 0) + diff - 1
+				if count <= indentation_level:
+					if len (heading) > 0:
+						headings[heading] = headings.get (heading, 0) + diff - 1
 
-			diff = 0
+					diff = 0
 
-			if count == indentation_level:
-				heading = line[:]
+					if count == indentation_level:
+						heading = line[:]
 
-		diff += 1
+				diff += 1
+	except EnvironmentError as err:
+		print (err)
 
 	if len (heading) > 0:
 		headings[heading] = headings.get (heading, 0) + diff - 1

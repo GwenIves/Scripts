@@ -74,24 +74,28 @@ def calc_research_time (team, tech):
 def get_teams (filename):
 	teams = {}
 
-	for lineno, line in enumerate (open (filename, encoding="ISO8859")):
-		if lineno < 1:
-			continue
+	try:
+		with open (filename, encoding="ISO8859") as fh:
+			for lineno, line in enumerate (fh):
+				if lineno < 1:
+					continue
 
-		line = line.strip ()
+				line = line.strip ()
 
-		fields = line.split (";")
+				fields = line.split (";")
 
-		name = fields[1]
-		skill = int (fields[3])
+				name = fields[1]
+				skill = int (fields[3])
 
-		specialisations = []
+				specialisations = []
 
-		for s in fields[6:]:
-			if len (s) > 1:
-				specialisations.append (s)
+				for s in fields[6:]:
+					if len (s) > 1:
+						specialisations.append (s)
 
-		teams[name] = (skill, specialisations)
+				teams[name] = (skill, specialisations)
+	except EnvironmentError as err:
+		print (err)
 
 	return teams
 
@@ -102,32 +106,36 @@ def get_technologies (filename):
 	prev_line = None
 	name = None
 
-	for line in open (filename, encoding="ISO8859"):
-		line = line.strip ()
+	try:
+		with open (filename, encoding="ISO8859") as fh:
+			for line in fh:
+				line = line.strip ()
 
-		if line == "application =":
-			if name is not None:
-				techs[name] = components
-				components = []
+				if line == "application =":
+					if name is not None:
+						techs[name] = components
+						components = []
 
-			name = prev_line[2:].title ()
+					name = prev_line[2:].title ()
 
-		if line.startswith ("component"):
-			type_start = line.find ("type = ")
-			type_end = line.find (" ", type_start + 7)
+				if line.startswith ("component"):
+					type_start = line.find ("type = ")
+					type_end = line.find (" ", type_start + 7)
 
-			difficulty_start = line.find ("difficulty =")
-			difficulty_end = line.find (" ", difficulty_start + 13)
+					difficulty_start = line.find ("difficulty =")
+					difficulty_end = line.find (" ", difficulty_start + 13)
 
-			double_time_start = line.find ("double_time =")
+					double_time_start = line.find ("double_time =")
 
-			type_val = line[type_start + 7:type_end]
-			difficulty_val = int (line[difficulty_start + 13:difficulty_end])
-			double_time_val = double_time_start != -1
+					type_val = line[type_start + 7:type_end]
+					difficulty_val = int (line[difficulty_start + 13:difficulty_end])
+					double_time_val = double_time_start != -1
 
-			components.append ((type_val, difficulty_val, double_time_val))
+					components.append ((type_val, difficulty_val, double_time_val))
 
-		prev_line = line
+				prev_line = line
+	except EnvironmentError as err:
+		print (err)
 
 	if name is not None:
 		techs[name] = components
