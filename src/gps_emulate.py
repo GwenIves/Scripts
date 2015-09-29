@@ -18,8 +18,8 @@ LATITUDE_START = 40.0
 LONGITUDE_START = -5.0
 
 def quit_emulation(signal, frame):
-    s.close ()
-    sys.exit (0)
+    s.close()
+    sys.exit(0)
 
 def main():
     signal.signal(signal.SIGINT, quit_emulation)
@@ -27,24 +27,24 @@ def main():
     latitude = LATITUDE_START
     longitude = LONGITUDE_START
 
-    s = socket.socket ()
-    s.connect (("localhost", 5554))
+    s = socket.socket()
+    s.connect(("localhost", 5554))
 
     while True:
-        latitude += LATITUDE_DELTA * random.random ()
+        latitude += LATITUDE_DELTA * random.random()
 
         if latitude > 90:
             latitude = -90
 
-        longitude += LONGITUDE_DELTA * random.random ()
+        longitude += LONGITUDE_DELTA * random.random()
 
         if longitude > 180:
             longitude = -180
 
-        command = "geo fix {1} {0}\n".format (latitude, longitude)
-        s.send (command.encode ('ascii'))
+        command = "geo fix {1} {0}\n".format(latitude, longitude)
+        s.send(command.encode('ascii'))
 
-        time.sleep (TIME_DELTA / 1000.0)
+        time.sleep(TIME_DELTA / 1000.0)
 
 if __name__ == '__main__':
     main()

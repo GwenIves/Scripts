@@ -7,7 +7,7 @@
 
 import sys
 
-def calc_research_time (team, tech):
+def calc_research_time(team, tech):
 	length = 0
 
 	skill, specialisations = team
@@ -71,35 +71,35 @@ def calc_research_time (team, tech):
 
 	return length
 
-def get_teams (filename):
+def get_teams(filename):
 	teams = {}
 
 	try:
-		with open (filename, encoding="ISO8859") as fh:
-			for lineno, line in enumerate (fh):
+		with open(filename, encoding="ISO8859") as fh:
+			for lineno, line in enumerate(fh):
 				if lineno < 1:
 					continue
 
-				line = line.strip ()
+				line = line.strip()
 
-				fields = line.split (";")
+				fields = line.split(";")
 
 				name = fields[1]
-				skill = int (fields[3])
+				skill = int(fields[3])
 
 				specialisations = []
 
 				for s in fields[6:]:
-					if len (s) > 1:
-						specialisations.append (s)
+					if len(s) > 1:
+						specialisations.append(s)
 
-				teams[name] = (skill, specialisations)
+				teams[name] =(skill, specialisations)
 	except EnvironmentError as err:
-		print (err)
+		print(err)
 
 	return teams
 
-def get_technologies (filename):
+def get_technologies(filename):
 	techs = {}
 
 	components = []
@@ -107,72 +107,72 @@ def get_technologies (filename):
 	name = None
 
 	try:
-		with open (filename, encoding="ISO8859") as fh:
+		with open(filename, encoding="ISO8859") as fh:
 			for line in fh:
-				line = line.strip ()
+				line = line.strip()
 
 				if line == "application =":
 					if name is not None:
 						techs[name] = components
 						components = []
 
-					name = prev_line[2:].title ()
+					name = prev_line[2:].title()
 
-				if line.startswith ("component"):
-					type_start = line.find ("type = ")
-					type_end = line.find (" ", type_start + 7)
+				if line.startswith("component"):
+					type_start = line.find("type = ")
+					type_end = line.find(" ", type_start + 7)
 
-					difficulty_start = line.find ("difficulty =")
-					difficulty_end = line.find (" ", difficulty_start + 13)
+					difficulty_start = line.find("difficulty =")
+					difficulty_end = line.find(" ", difficulty_start + 13)
 
-					double_time_start = line.find ("double_time =")
+					double_time_start = line.find("double_time =")
 
 					type_val = line[type_start + 7:type_end]
-					difficulty_val = int (line[difficulty_start + 13:difficulty_end])
+					difficulty_val = int(line[difficulty_start + 13:difficulty_end])
 					double_time_val = double_time_start != -1
 
-					components.append ((type_val, difficulty_val, double_time_val))
+					components.append((type_val, difficulty_val, double_time_val))
 
 				prev_line = line
 	except EnvironmentError as err:
-		print (err)
+		print(err)
 
 	if name is not None:
 		techs[name] = components
 
 	return techs
 
-def main ():
-	if len (sys.argv) <= 2:
-		print ("usage: {0} <teams definition file> <technology definition files list>".format (sys.argv[0]))
-		sys.exit (1)
+def main():
+	if len(sys.argv) <= 2:
+		print("usage: {0} <teams definition file> <technology definition files list>".format(sys.argv[0]))
+		sys.exit(1)
 
-	teams = get_teams (sys.argv[1])
+	teams = get_teams(sys.argv[1])
 
 	techs = {}
 
 	for f in sys.argv[2:]:
-		techs.update (get_technologies (f))
+		techs.update(get_technologies(f))
 
-	for tech in sorted (techs.keys ()):
-		print (tech)
+	for tech in sorted(techs.keys()):
+		print(tech)
 
 		team_performances = []
 
 		for team in teams.keys():
-			team_performances.append ((calc_research_time (teams[team], techs[tech]), team))
+			team_performances.append((calc_research_time(teams[team], techs[tech]), team))
 
-		team_performances.sort ()
+		team_performances.sort()
 
 		for perf, team in team_performances:
-			print (team, perf)
+			print(team, perf)
 
-		print ()
-		print ()
+		print()
+		print()
 
 if __name__ == '__main__':
     try:
-        main ()
+        main()
     except FileNotFoundError:
-        print ("Error: unable to process definition files")
-        sys.exit (1)
+        print("Error: unable to process definition files")
+        sys.exit(1)
