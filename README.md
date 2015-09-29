@@ -1,6 +1,6 @@
 #Scripts
 
-A collection of miscellaneous simple scripts
+A collection of miscellaneous simple scripts and customized configuration files
 
    * **gdrive_sync.py** - Synchronise local files with Google Drive
    * **gps_emulate.py** - Sends periodic GPS fixes to an Android emulator
