@@ -42,7 +42,7 @@ def get_files(service, title, parent_id = None, mime_type = None):
     query = "title = '{}'".format(title)
 
     if mime_type:
-	    query += " and mimeType = '{}'".format(mime_type)
+        query += " and mimeType = '{}'".format(mime_type)
 
     if parent_id:
             query += "and '{}' in parents".format(parent_id)
@@ -56,7 +56,7 @@ def create_file(service, title, parent_id, source, mime_type):
         "title" : title,
         "shared" : False,
         "mimeType" : mime_type,
-	"parents" : [{"id" : parent_id}]
+    "parents" : [{"id" : parent_id}]
     }
 
     params = {
@@ -72,7 +72,7 @@ def create_file(service, title, parent_id, source, mime_type):
     if not files:
         f = service.files().insert(**params).execute()
     else:
-	params["fileId"] = files[0]["id"]
+    params["fileId"] = files[0]["id"]
         f = service.files().update(**params).execute()
 
     return f
@@ -81,11 +81,11 @@ def get_folder_id(service, folder):
     if folder:
         folders = get_files(service, folder, "root", FOLDER_MIME_TYPE)
 
-	if folders:
+    if folders:
             folder_id = folders[0]["id"]
-	else:
+    else:
             folder = create_file(service, folder, "root", None, FOLDER_MIME_TYPE)
-	    folder_id = folder["id"]
+        folder_id = folder["id"]
     else:
         folder_id = "root"
 
