@@ -115,4 +115,5 @@ def main():
 
     synchronize_files (args, service, opts)
 
-main ()
+if __name__ == '__main__':
+    main ()

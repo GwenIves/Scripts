@@ -78,4 +78,5 @@ def main ():
 		if headings[heading] > 0:
 			print ('{0}{1}'.format (heading.ljust (50, ' '), headings[heading]))
 
-main ()
+if __name__ == '__main__':
+    main ()

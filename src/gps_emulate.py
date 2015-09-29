@@ -17,30 +17,34 @@ LONGITUDE_DELTA = 0.0005
 LATITUDE_START = 40.0
 LONGITUDE_START = -5.0
 
-s = socket.socket ()
-s.connect (("localhost", 5554))
-
 def quit_emulation(signal, frame):
-	s.close ()
-	sys.exit (0)
+    s.close ()
+    sys.exit (0)
 
-signal.signal(signal.SIGINT, quit_emulation)
+def main():
+    signal.signal(signal.SIGINT, quit_emulation)
 
-latitude = LATITUDE_START
-longitude = LONGITUDE_START
+    latitude = LATITUDE_START
+    longitude = LONGITUDE_START
 
-while True:
-	latitude += LATITUDE_DELTA * random.random ()
+    s = socket.socket ()
+    s.connect (("localhost", 5554))
 
-	if latitude > 90:
-		latitude = -90
+    while True:
+        latitude += LATITUDE_DELTA * random.random ()
 
-	longitude += LONGITUDE_DELTA * random.random ()
+        if latitude > 90:
+            latitude = -90
 
-	if longitude > 180:
-		longitude = -180
+        longitude += LONGITUDE_DELTA * random.random ()
 
-	command = "geo fix {1} {0}\n".format (latitude, longitude)
-	s.send (command.encode ('ascii'))
+        if longitude > 180:
+            longitude = -180
 
-	time.sleep (TIME_DELTA / 1000.0)
+        command = "geo fix {1} {0}\n".format (latitude, longitude)
+        s.send (command.encode ('ascii'))
+
+        time.sleep (TIME_DELTA / 1000.0)
+
+if __name__ == '__main__':
+    main()

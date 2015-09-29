@@ -162,8 +162,9 @@ def main ():
 		print ()
 		print ()
 
-try:
-	main ()
-except FileNotFoundError:
-	print ("Error: unable to process definition files")
-	sys.exit (1)
+if __name__ == '__main__':
+    try:
+        main ()
+    except FileNotFoundError:
+        print ("Error: unable to process definition files")
+        sys.exit (1)
