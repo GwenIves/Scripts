@@ -1,0 +1,10 @@
+[user]
+	name = Gwen Ives
+	email = ives.gwen@gmail.com
+[core]
+	excludesfile = ~/.gitignore
+	autocrlf = input
+[color]
+	ui = true
+[alias]
+	l = log --all --graph --branches --decorate --abbrev-commit --date=short --pretty=format:'%C(yellow)%h%Creset%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
