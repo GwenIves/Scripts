@@ -147,8 +147,10 @@ def get_technologies(filename):
 
 def main():
     if len(sys.argv) <= 2:
-        print("usage: {0} <teams definition file> <technology definition files list>"
-            .format(sys.argv[0]))
+        print(
+            "usage: {0} <teams definition file> <technology definition files list>"
+            .format(sys.argv[0])
+        )
         sys.exit(1)
 
     teams = get_teams(sys.argv[1])

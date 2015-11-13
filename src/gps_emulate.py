@@ -18,7 +18,7 @@ LATITUDE_START = 40.0
 LONGITUDE_START = -5.0
 
 def main():
-    def quit_emulation(_, _):
+    def quit_emulation(_unused_signal, _unused_frame):
         s.close()
         sys.exit(0)
 
