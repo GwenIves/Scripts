@@ -52,7 +52,7 @@ notes=FIXME,XXX,TODO
 bad-functions=map,filter,apply,file
 
 function-rgx=[a-z_][a-z0-9_]*$
-variable-rgx=[a-z_][a-z0-9_]*$
+variable-rgx=[A-Z]|[a-z_][a-z0-9_]*$
 const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
 attr-rgx=[a-z_][a-z0-9_]*$
 argument-rgx=[a-z_][a-z0-9_]*$
