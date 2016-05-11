@@ -16,6 +16,7 @@ disable=too-many-lines,
 	too-few-public-methods,
 	too-many-nested-blocks,
 	too-many-boolean-expressions,
+	too-many-function-args,
 	attribute-defined-outside-init,
 	superfluous-parens,
 	multiple-statements
